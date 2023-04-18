@@ -4,6 +4,7 @@ namespace TecNET.Client.Services
 {
     public interface IQuestionsService
     {
+        /*
         Task<List<Questions>> GetAll();
         Task<Questions> GetById(int id);
         Task<Questions> GetByCategory(string category);
@@ -11,5 +12,6 @@ namespace TecNET.Client.Services
         Task Add(Questions entry);
         Task Update(int id, Questions entry);
         Task Delete(int id);
+        */
     }
 }

@@ -9,7 +9,7 @@ using static MudBlazor.CategoryTypes;
 
 namespace TecNET.Client.Services
 {
-
+/*
     public partial class QuestionsService : IQuestionsService
     {
         private readonly HttpClient _httpClient;
@@ -160,6 +160,7 @@ namespace TecNET.Client.Services
             }
         }
     }
-        */
+        
     }
+*/
 }
