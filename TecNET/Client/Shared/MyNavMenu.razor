@@ -1,0 +1,15 @@
+﻿<MudNavMenu>
+    <MudNavLink Href="/" Match="NavLinkMatch.All">Home</MudNavLink>
+    <MudNavLink Href="/questions/create" Match="NavLinkMatch.Prefix">Add Question</MudNavLink>
+    <MudNavGroup Title="Categories" Expanded="true">
+        <MudNavLink Href="/" Match="NavLinkMatch.Prefix">ALL</MudNavLink>
+        <MudNavLink Href="?selectedCat=NET" Match="NavLinkMatch.Prefix">.NET</MudNavLink>
+        <MudNavLink Href="?selectedCat=LINQ" Match="NavLinkMatch.Prefix">LINQ</MudNavLink>
+        <MudNavLink Href="?selectedCat=Entity" Match="NavLinkMatch.Prefix">Entity Framework</MudNavLink>
+        <MudNavLink Href="?selectedCat=SQL" Match="NavLinkMatch.Prefix">SQL</MudNavLink>
+        <MudNavLink Href="?selectedCat=ASP" Match="NavLinkMatch.Prefix">ASP</MudNavLink>
+        <MudNavLink Href="?selectedCat=GIT" Match="NavLinkMatch.Prefix">GIT</MudNavLink>
+
+    </MudNavGroup>
+    <MudNavLink Href="/about" Match="NavLinkMatch.Prefix">About</MudNavLink>
+</MudNavMenu>

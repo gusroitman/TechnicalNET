@@ -1,0 +1,34 @@
+﻿
+@inject NavigationManager NavManager
+
+
+
+<h1>Current url</h1>
+
+<p>@(NavManager.Uri)</p>
+
+@code {
+
+    [Parameter]
+    public string Id { get; set; }
+
+    // blazor: add parm to url
+    string AddQueryParm(string parmName, string parmValue)
+    {
+        var uriBuilder = new UriBuilder(NavManager.Uri);
+        var q = System.Web.HttpUtility.ParseQueryString(uriBuilder.Query);
+        q[parmName] = parmValue;
+        uriBuilder.Query = q.ToString();
+        var newUrl = uriBuilder.ToString();
+        return newUrl;
+    }
+
+    // blazor: get query parm from url
+    string GetQueryParm(string parmName)
+    {
+        var uriBuilder = new UriBuilder(NavManager.Uri);
+        var q = System.Web.HttpUtility.ParseQueryString(uriBuilder.Query);
+        return q[parmName] ?? "";
+    }
+
+}

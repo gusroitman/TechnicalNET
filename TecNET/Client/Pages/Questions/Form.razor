@@ -1,0 +1,53 @@
+﻿@inject NavigationManager NavigationManager
+
+<EditForm Model="@questions" OnValidSubmit="@OnValidSubmit">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+        <MudText>Question :</MudText>
+        <div>
+            <MudTextField @bind-Value="questions.Title" HelperText="Write your question here" Variant="Variant.Outlined"></MudTextField>
+            <ValidationMessage For="@(() => questions.Title)" />
+        </div>
+    </div>
+    <br />
+    <div class="form-group ">
+        <div>
+            <MudText>Category :</MudText>
+            <div>
+                <MudSelect @bind-Value="@questions.Category" Variant="Variant.Outlined">
+                    <QuestionSelect></QuestionSelect>
+                </MudSelect>
+                @if (questions.Category == "Add")
+                {
+                    <MudTextField @bind-Value="questions.Category" Variant="Variant.Outlined"></MudTextField>
+                }
+                <ValidationMessage For="@(() => questions.Category)" />
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="form-group ">
+        <div>
+            <MudText>Answer :</MudText>
+            <div>
+                <MudTextField @bind-Value="questions.Content" HelperText="You can use html" Variant="Variant.Outlined" Lines="10"></MudTextField>
+                <ValidationMessage For="@(() => questions.Content)" />
+            </div>
+        </div>
+    </div>
+    <br />
+    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">@ButtonText</MudButton>
+    <MudButton ButtonType="ButtonType.Button" Variant="Variant.Filled" OnClick=Close Color="Color.Error" Class="ml-auto">Cancel</MudButton>
+</EditForm>
+
+@code {
+
+    [Parameter] public Questions questions { get; set; }
+    [Parameter] public string ButtonText { get; set; } = "Save";
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+
+    private void Close()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+}

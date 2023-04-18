@@ -1,0 +1,35 @@
+﻿@page "/questions/create"
+
+@using Ganss.Xss
+
+@inject HttpClient httpClient
+@inject NavigationManager NavigationManager
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+@inject IJSRuntime JSRuntime
+
+<br />
+<h3>Create a new Question</h3>
+<br />
+<Form ButtonText="Add new Question" questions="@questions"
+      OnValidSubmit="@CreateQuestion" />
+@code {
+    Questions questions = new Questions();
+
+    private string content = string.Empty;
+
+    async Task CreateQuestion()
+    {
+        var sanitizer = new HtmlSanitizer();
+        var html = questions.Content;
+        content = sanitizer.Sanitize(html, "https://www.example.com");
+        
+        questions.Content = content;
+
+        await httpClient.PostAsJsonAsync("api/questions", questions);
+        Snackbar.Add($"Question has been added.", Severity.Success);
+        NavigationManager.NavigateTo("/");
+        await OnInitializedAsync();
+    }
+
+}

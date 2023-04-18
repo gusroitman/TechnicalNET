@@ -1,0 +1,28 @@
+﻿@inject HttpClient httpClient
+
+@if (questions != null)
+{
+    <MudSelectItem Value="@("Add")">Add Category</MudSelectItem>
+
+    @foreach (var item in questions.Select(o => o.Category).Distinct())
+    {
+        <MudSelectItem Value="@item">@item</MudSelectItem>
+    }
+}
+
+@code {
+
+    public Questions[]? questions { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            questions = await httpClient.GetFromJsonAsync<Questions[]>("api/questions");
+        }
+        catch (Exception e)
+        {
+
+        }
+    }
+}

@@ -1,0 +1,120 @@
+﻿@page "/questions/{id:int}"
+
+@inject HttpClient httpClient
+@inject NavigationManager NavigationManager
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+@inject IJSRuntime JSRuntime
+
+<MudGrid Class="d-flex align-center justify-content-between mud-width-full py-8">
+    <MudItem>
+        <MudButton Class="mt-0" Variant="Variant.Filled" Size="Size.Small" StartIcon="@Icons.Material.Filled.ArrowCircleLeft" IconSize="Size.Small" dense="true" Color="Color.Secondary" @onclick="() => GoHome()">
+            Go back Home
+        </MudButton>
+    </MudItem>
+    <MudItem>
+        <MudText>Category : <b>@questions.Category</b></MudText>
+    </MudItem>
+    <MudSpacer />
+    <MudItem>
+        @if (questions.Id <= 1)
+        {
+            
+        }
+        else
+        {
+            <MudButton Class="mt-0" Variant="Variant.Filled" Size="Size.Small" StartIcon="@Icons.Material.Filled.ArrowCircleLeft" IconSize="Size.Small" dense="true" Color="Color.Secondary" @onclick="() => GoBack()">
+                Previous Question
+            </MudButton>
+        }
+     </MudItem>
+    <MudItem >
+        <MudText>ID : <b>@questions.Id</b></MudText>
+    </MudItem>
+    <MudItem >
+        @if (questionsCount is not null)
+        {
+            if (questionsCount.Count() <= id)
+            {
+            }
+            else
+            {
+                <MudButton Class="mt-0" Variant="Variant.Filled" Size="Size.Small" StartIcon="@Icons.Material.Filled.ArrowCircleRight" IconSize="Size.Small" dense="true" Color="Color.Secondary" @onclick="() => GoNext()">
+                    Next Question
+                </MudButton>
+            }
+        }
+    </MudItem>
+</MudGrid>
+
+<MudDivider DividerType="DividerType.Middle" Class="mb-2" />
+
+<br />
+<h2>Question : @questions.Title</h2>
+<br />
+
+<MudDivider DividerType="DividerType.Middle" Class="mb-2" />
+
+<br />
+
+@if (questions != null)
+{
+    @((MarkupString)questions.Content)
+}
+<br />
+
+@code {
+    [Parameter] public int id { get; set; }
+
+    Questions questions = new Questions();
+
+    private Questions[]? questionsCount;
+
+    private bool forceLoad;
+    private int newCount;
+    private string? message;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            questionsCount = await httpClient.GetFromJsonAsync<Questions[]>("api/questions");
+
+        }
+        catch (Exception e)
+        {
+            message = e.Message;
+        }
+    }
+
+    protected async override Task OnParametersSetAsync()
+    {
+        questions = await httpClient.GetFromJsonAsync<Questions>($"api/questions/{id}");
+    }
+
+    private void AddEntry()
+    {
+        NavigationManager.NavigateTo($"/questions/create");
+    }
+
+    private void GoHome()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+
+    private void GoBack()
+    {
+        newCount = id - 1;
+        NavigationManager.NavigateTo("/questions/" + newCount, forceLoad);
+    }
+
+    private void GoNext()
+    {
+        newCount = id + 1;
+
+        if(questionsCount.Count() >= newCount)
+        {
+            NavigationManager.NavigateTo("/questions/" + newCount, forceLoad);
+        }
+    }
+}

@@ -1,0 +1,41 @@
+﻿@page "/questions/{id:int}/edit"
+
+@using Ganss.Xss
+
+@inject HttpClient httpClient
+@inject NavigationManager NavigationManager
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+@inject IJSRuntime JSRuntime
+
+<br />
+<h3>Edit</h3>
+<br />
+<Form ButtonText="Update" questions="@questions"
+      OnValidSubmit="@EditQuestion" />
+@code {
+    [Parameter] public int id { get; set; }
+
+    Questions questions = new Questions();
+
+    private string content;
+
+    protected async override Task OnParametersSetAsync()
+    {
+        questions = await httpClient.GetFromJsonAsync<Questions>($"api/questions/{id}");
+    }
+    async Task EditQuestion()
+    {
+        var sanitizer = new HtmlSanitizer();
+        var html = questions.Content;
+        content = sanitizer.Sanitize(html, "https://www.example.com");
+
+        questions.Content = content;
+
+        await httpClient.PutAsJsonAsync("api/questions", questions);
+        Snackbar.Add($"Question has been modified.", Severity.Success);
+        NavigationManager.NavigateTo("/");
+        await OnInitializedAsync();
+    }
+
+}
