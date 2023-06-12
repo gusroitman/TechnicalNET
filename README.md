@@ -6,3 +6,5 @@
 ### Hello! I´m Gustavo :wave: 
 
 ### I made a Knowledge Base for Technical .NET Questions - But it can be used for any kind of Questions and data.
+
+#### rename TecNET.bak to sql
